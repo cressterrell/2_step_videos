@@ -16,15 +16,20 @@
 package com.example.android.miwok;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import static android.content.Context.MODE_PRIVATE;
+
 
 /**
  * {@link WordAdapter} is an {@link ArrayAdapter} that can provide the layout for each list item
@@ -32,8 +37,20 @@ import java.util.ArrayList;
  */
 public class WordAdapter extends ArrayAdapter<Word>  {
 
+    static class ViewHolderItem {
+        TextView defaultTextView;
+        TextView miWokTextView;
+        CheckBox checkbox;
+        View container;
+    }
+
     /** Resource ID for the background color for this list of words */
     private int mColorResourceId;
+    private Context mContext;
+    private SharedPreferences mPref;
+
+
+    public static final String PREF_FILE_KEY = "DanceDancePref";
 
     /**
      * Create a new {@link WordAdapter} object.
@@ -45,54 +62,61 @@ public class WordAdapter extends ArrayAdapter<Word>  {
     public WordAdapter(Context context, ArrayList<Word> words, int colorResourceId) {
         super(context, 0, words);
         mColorResourceId = colorResourceId;
+        mContext = context;
+        SharedPreferences mPref = mContext.getApplicationContext().getSharedPreferences(PREF_FILE_KEY, MODE_PRIVATE);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Check if an existing view is being reused, otherwise inflate the view
-        View listItemView = convertView;
-        if (listItemView == null) {
-            listItemView = LayoutInflater.from(getContext()).inflate(
+        ViewHolderItem viewHolder;
+        if (convertView == null) {
+            convertView = LayoutInflater.from(getContext()).inflate(
                     R.layout.list_item, parent, false);
+            viewHolder = new ViewHolderItem();
+            viewHolder.miWokTextView = ((TextView) convertView.findViewById(R.id.miwok_text_view));
+            viewHolder.defaultTextView = ((TextView) convertView.findViewById(R.id.default_text_view));
+            viewHolder.checkbox = ((CheckBox) convertView.findViewById(R.id.check_box));
+            viewHolder.container = ((View) convertView.findViewById(R.id.text_container));
+            convertView.setTag(viewHolder);
+        } else {
+            viewHolder = (ViewHolderItem) convertView.getTag();
         }
+
 
         // Get the {@link Word} object located at this position in the list
-        Word currentWord = getItem(position);
+        final Word currentWord = getItem(position);
 
-        // Find the TextView in the list_item.xml layout with the ID miwok_text_view.
-        TextView miwokTextView = (TextView) listItemView.findViewById(R.id.miwok_text_view);
-        // Get the Miwok translation from the currentWord object and set this text on
-        // the Miwok TextView.
-        miwokTextView.setText(currentWord.getMiwokTranslation());
+        viewHolder.miWokTextView.setText(currentWord.getMiwokTranslation());
 
-        // Find the TextView in the list_item.xml layout with the ID default_text_view.
-        TextView defaultTextView = (TextView) listItemView.findViewById(R.id.default_text_view);
-        // Get the default translation from the currentWord object and set this text on
-        // the default TextView.
-        defaultTextView.setText(currentWord.getDefaultTranslation());
+        viewHolder.defaultTextView.setText(currentWord.getDefaultTranslation());
 
-        // Find the ImageView in the list_item.xml layout with the ID image.
-        ImageView imageView = (ImageView) listItemView.findViewById(R.id.image);
-        // Check if an image is provided for this word or not
-        if (currentWord.hasImage()) {
-            // If an image is available, display the provided image based on the resource ID
-            imageView.setImageResource(currentWord.getImageResourceId());
-            // Make sure the view is visible
-            imageView.setVisibility(View.VISIBLE);
-        } else {
-            // Otherwise hide the ImageView (set visibility to GONE)
-            imageView.setVisibility(View.GONE);
+        if (mPref == null) {
+            mPref = mContext.getApplicationContext().getSharedPreferences(PREF_FILE_KEY, MODE_PRIVATE);
         }
 
-        // Set the theme color for the list item
-        View textContainer = listItemView.findViewById(R.id.text_container);
+        final boolean isCheckedFlag = mPref.getBoolean(String.valueOf(currentWord.getItemId()), false);
+
+        viewHolder.checkbox.setChecked(isCheckedFlag);
+
+        viewHolder.checkbox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences.Editor editor = mPref.edit();
+                if (!isCheckedFlag) {
+                    editor.putBoolean(String.valueOf(currentWord.getItemId()), true);
+                } else {
+                    editor.putBoolean(String.valueOf(currentWord.getItemId()), false);
+                }
+                editor.commit();
+            }
+        });
+
         // Find the color that the resource ID maps to
         int color = ContextCompat.getColor(getContext(), mColorResourceId);
         // Set the background color of the text container View
-        textContainer.setBackgroundColor(color);
+        viewHolder.container.setBackgroundColor(color);
 
-        // Return the whole list item layout (containing 2 TextViews) so that it can be shown in
-        // the ListView.
-        return listItemView;
+        return convertView;
     }
 }

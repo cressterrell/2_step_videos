@@ -30,11 +30,17 @@ public class Word {
     /** Audio resource ID for the word */
     private int mAudioResourceId;
 
+    /** ID used for uniquely identifying the item */
+    private int mItemId;
+
     /** Image resource ID for the word */
-    private int mImageResourceId = NO_IMAGE_PROVIDED;
+    //private int mImageResourceId = NO_RESOUCE_PROVIDED;
+
+    /** the video in the raw file */
+    private int mVideoResourceId = NO_RESOUCE_PROVIDED;
 
     /** Constant value that represents no image was provided for this word */
-    private static final int NO_IMAGE_PROVIDED = -1;
+    public static final int NO_RESOUCE_PROVIDED = -1;
 
     /**
      * Create a new Word object.
@@ -44,10 +50,12 @@ public class Word {
      * @param miwokTranslation is the word in the Miwok language
      * @param audioResourceId is the resource ID for the audio file associated with this word
      */
-    public Word(String defaultTranslation, String miwokTranslation, int audioResourceId) {
+    public Word(int itemId, String defaultTranslation, String miwokTranslation, int audioResourceId) {
+        mItemId = itemId;
         mDefaultTranslation = defaultTranslation;
         mMiwokTranslation = miwokTranslation;
         mAudioResourceId = audioResourceId;
+        mVideoResourceId = NO_RESOUCE_PROVIDED;
     }
 
     /**
@@ -56,15 +64,22 @@ public class Word {
      * @param defaultTranslation is the word in a language that the user is already familiar with
      *                           (such as English)
      * @param miwokTranslation is the word in the Miwok language
-     * @param imageResourceId is the drawable resource ID for the image associated with the word
      * @param audioResourceId is the resource ID for the audio file associated with this word
+     * @param videoResourceId is the resource ID for the video file associated with this word
      */
-    public Word(String defaultTranslation, String miwokTranslation, int imageResourceId,
-                int audioResourceId) {
+    public Word(int itemId, String defaultTranslation, String miwokTranslation, int audioResourceId, int videoResourceId) {
+        mItemId = itemId;
         mDefaultTranslation = defaultTranslation;
         mMiwokTranslation = miwokTranslation;
-        mImageResourceId = imageResourceId;
         mAudioResourceId = audioResourceId;
+        mVideoResourceId = videoResourceId;
+    }
+
+    /**
+     * Get the unique item id
+     */
+    public int getItemId() {
+        return mItemId;
     }
 
     /**
@@ -82,23 +97,16 @@ public class Word {
     }
 
     /**
-     * Return the image resource ID of the word.
+     * Return the audio resource ID of the word.
      */
-    public int getImageResourceId() {
-        return mImageResourceId;
-    }
-
-    /**
-     * Returns whether or not there is an image for this word.
-     */
-    public boolean hasImage() {
-        return mImageResourceId != NO_IMAGE_PROVIDED;
+    public int getAudioResourceId() {
+        return mAudioResourceId;
     }
 
     /**
      * Return the audio resource ID of the word.
      */
-    public int getAudioResourceId() {
-        return mAudioResourceId;
+    public int getVideoResourceId() {
+        return mVideoResourceId;
     }
 }

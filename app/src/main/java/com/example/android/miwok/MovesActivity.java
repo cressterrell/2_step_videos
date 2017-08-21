@@ -16,14 +16,16 @@
 package com.example.android.miwok;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.VideoView;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-
+import android.net.Uri;
 import java.util.ArrayList;
 
 public class MovesActivity extends AppCompatActivity {
@@ -33,6 +35,8 @@ public class MovesActivity extends AppCompatActivity {
 
     /** Handles audio focus when playing a sound file */
     private AudioManager mAudioManager;
+
+    private Word mSelectedItem = null;
 
     /**
      * This listener gets triggered whenever the audio focus changes
@@ -72,8 +76,19 @@ public class MovesActivity extends AppCompatActivity {
         public void onCompletion(MediaPlayer mediaPlayer) {
             // Now that the sound file has finished playing, release the media player resources.
             releaseMediaPlayer();
+            //Launch the video here
+            launchVideo();
         }
     };
+
+    private boolean launchVideo() {
+        Intent videoPlaybackActivity = new Intent(this, DanceDanceVideoPlayer.class);
+        videoPlaybackActivity.putExtra("fileRes", mSelectedItem.getVideoResourceId());
+        videoPlaybackActivity.putExtra("title1", mSelectedItem.getMiwokTranslation());
+        videoPlaybackActivity.putExtra("title2", mSelectedItem.getDefaultTranslation());
+        startActivityForResult(videoPlaybackActivity, DanceDanceVideoPlayer.PLAY_VIDEO);
+        return true;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,26 +100,26 @@ public class MovesActivity extends AppCompatActivity {
 
         // Create a list of words
         final ArrayList<Word> words = new ArrayList<Word>();
-        words.add(new Word("1. Basic", "Beginner", R.drawable.number_one, R.raw.number_one));
-        words.add(new Word("2. Promenade", "Beginner", R.drawable.number_two, R.raw.number_two));
-        words.add(new Word("3. Right Turning Basic (Natural)", "Beginner", R.drawable.number_three, R.raw.number_three));
-        words.add(new Word("4. Right Turning Basic (Cross-Body)", "Beginner", R.drawable.number_four, R.raw.number_four));
-        words.add(new Word("5. Promenade Pivot", "Beginner", R.drawable.number_five, R.raw.number_five));
-        words.add(new Word("6. Underarm Turn (Left)", "Beginner", R.drawable.number_five, R.raw.number_five));
-        words.add(new Word("7. Underarm Turn (Right)", "Beginner", R.drawable.number_six, R.raw.number_six));
-        words.add(new Word("8. Wrap (Walkout)", "Beginner", R.drawable.number_seven, R.raw.number_seven));
-        words.add(new Word("9. Wrap (Check Turn)", "Beginner", R.drawable.number_eight, R.raw.number_eight));
-        words.add(new Word("10. Sweetheart (Check Turn Left)", "Intermediate 1", R.drawable.number_ten, R.raw.number_ten));
-        words.add(new Word("11. Sweetheart (Check Turn Right)", "Intermediate 1", R.drawable.number_ten, R.raw.number_ten));
-        words.add(new Word("12. Grapevine (Closed)", "Beginner", R.drawable.number_nine, R.raw.number_nine));
-        words.add(new Word("13. Grapevine (Backward Hands)", "Intermediate 1", R.drawable.number_ten, R.raw.number_ten));
-        words.add(new Word("14. Grapevine (Forward Hands)", "Intermediate 1", R.drawable.number_ten, R.raw.number_ten));
-        words.add(new Word("15. Basket Whip", "Intermediate 1", R.drawable.number_ten, R.raw.number_ten));
-        words.add(new Word("16. Shoulder Catch", "Intermediate 1", R.drawable.number_ten, R.raw.number_ten));
-        words.add(new Word("17. Weave (Inside)", "Intermediate 1", R.drawable.number_ten, R.raw.number_ten));
-        words.add(new Word("18. Weave (Outside)", "Intermediate 1", R.drawable.number_ten, R.raw.number_ten));
-        words.add(new Word("19. Weave (Outside/Inside)", "Intermediate 1", R.drawable.number_ten, R.raw.number_ten));
-        words.add(new Word("20. Side-by-Side Freespins", "Intermediate 1", R.drawable.number_ten, R.raw.number_ten));
+        words.add(new Word(1,"1. Basic", "Beginner", R.raw.number_one, R.raw.video_number_one));
+        words.add(new Word(2,"2. Promenade", "Beginner", R.raw.number_two, R.raw.video_number_one));
+        words.add(new Word(3,"3. Right Turning Basic (Natural)", "Beginner",R.raw.number_three, R.raw.video_number_one));
+        words.add(new Word(4,"4. Right Turning Basic (Cross-Body)", "Beginner", R.raw.number_four, R.raw.video_number_one));
+        words.add(new Word(5,"5. Promenade Pivot", "Beginner", R.raw.number_five, R.raw.video_number_one));
+        words.add(new Word(6,"6. Underarm Turn (Left)", "Beginner", R.raw.number_five, R.raw.video_number_one));
+        words.add(new Word(7,"7. Underarm Turn (Right)", "Beginner", R.raw.number_six, R.raw.video_number_one));
+        words.add(new Word(8,"8. Wrap (Walkout)", "Beginner",R.raw.number_seven, R.raw.video_number_one));
+        words.add(new Word(9,"9. Wrap (Check Turn)", "Beginner", R.raw.number_eight, R.raw.video_number_one));
+        words.add(new Word(10,"10. Sweetheart (Check Turn Left)", "Intermediate 1", R.raw.number_ten, R.raw.video_number_one));
+        words.add(new Word(11,"11. Sweetheart (Check Turn Right)", "Intermediate 1", R.raw.number_ten, R.raw.video_number_one));
+        words.add(new Word(12,"12. Grapevine (Closed)", "Beginner", R.raw.number_nine, R.raw.video_number_one));
+        words.add(new Word(13,"13. Grapevine (Backward Hands)", "Intermediate 1", R.raw.number_ten, R.raw.video_number_one));
+        words.add(new Word(14,"14. Grapevine (Forward Hands)", "Intermediate 1", R.raw.number_ten, R.raw.video_number_one));
+        words.add(new Word(15,"15. Basket Whip", "Intermediate 1", R.raw.number_ten, R.raw.video_number_one));
+        words.add(new Word(16,"16. Shoulder Catch", "Intermediate 1", R.raw.number_ten, R.raw.video_number_one));
+        words.add(new Word(17,"17. Weave (Inside)", "Intermediate 1", R.raw.number_ten, R.raw.video_number_one));
+        words.add(new Word(18,"18. Weave (Outside)", "Intermediate 1", R.raw.number_ten, R.raw.video_number_one));
+        words.add(new Word(19,"19. Weave (Outside/Inside)", "Intermediate 1", R.raw.number_ten, R.raw.video_number_one));
+        words.add(new Word(20,"20. Side-by-Side Freespins", "Intermediate 1", R.raw.number_ten, R.raw.video_number_one));
 
 
         // Create an {@link WordAdapter}, whose data source is a list of {@link Word}s. The
@@ -151,6 +166,8 @@ public class MovesActivity extends AppCompatActivity {
                     // media player once the sound has finished playing.
                     mMediaPlayer.setOnCompletionListener(mCompletionListener);
                 }
+
+                mSelectedItem = word;
             }
         });
     }
