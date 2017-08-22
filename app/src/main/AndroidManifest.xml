@@ -15,7 +15,6 @@
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.android.miwok">
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -41,6 +40,11 @@
         <activity
             android:name=".SavedRoutinesActivity"
             android:label="@string/category_saved_routine" />
+        <activity
+            android:screenOrientation="landscape"
+            android:configChanges="orientation|keyboardHidden"
+            android:name=".DanceDanceVideoPlayer"
+            android:label="DDVP" />
     </application>
 
 </manifest>
