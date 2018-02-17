@@ -64,7 +64,8 @@ public class MainActivity extends AppCompatActivity {
             // The code in this method will be executed when the family category is clicked on.
             @Override
             public void onClick(View view) {
-                Toast.makeText(view.getContext(), "Coming Soon", Toast.LENGTH_LONG).show();
+                Intent i = new Intent(MainActivity.this, ProgressLevelActivity.class);
+                startActivity(i);
             }
         });
 

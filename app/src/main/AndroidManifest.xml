@@ -28,16 +28,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MovesActivity"
+            android:name=".MovesActivity" android:screenOrientation="portrait"
             android:label="@string/category_moves" />
         <activity
-            android:name=".ProgressLevelActivity"
+            android:name=".ProgressLevelActivity" android:screenOrientation="portrait"
             android:label="@string/category_progress_level" />
         <activity
-            android:name=".RoutineBuilderActivity"
+            android:name=".RoutineBuilderActivity" android:screenOrientation="portrait"
             android:label="@string/category_routine_builder" />
         <activity
-            android:name=".SavedRoutinesActivity"
+            android:name=".SavedRoutinesActivity" android:screenOrientation="portrait"
             android:label="@string/category_saved_routine" />
         <activity
             android:screenOrientation="landscape"

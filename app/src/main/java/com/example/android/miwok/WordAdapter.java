@@ -77,7 +77,7 @@ public class WordAdapter extends ArrayAdapter<Word>  {
             viewHolder.miWokTextView = ((TextView) convertView.findViewById(R.id.miwok_text_view));
             viewHolder.defaultTextView = ((TextView) convertView.findViewById(R.id.default_text_view));
             viewHolder.checkbox = ((CheckBox) convertView.findViewById(R.id.check_box));
-            viewHolder.container = ((View) convertView.findViewById(R.id.text_container));
+            viewHolder.container = ((View) convertView.findViewById(R.id.container));
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolderItem) convertView.getTag();
@@ -116,6 +116,10 @@ public class WordAdapter extends ArrayAdapter<Word>  {
         int color = ContextCompat.getColor(getContext(), mColorResourceId);
         // Set the background color of the text container View
         viewHolder.container.setBackgroundColor(color);
+
+        if (currentWord.getItemId()>5) {
+            viewHolder.container.setBackgroundColor(ContextCompat.getColor(mContext, R.color.saved));
+        }
 
         return convertView;
     }
