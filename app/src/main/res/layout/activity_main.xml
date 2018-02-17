@@ -13,6 +13,7 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -21,13 +22,31 @@
     android:orientation="vertical"
     tools:context="com.example.android.miwok.MainActivity">
 
-    <!-- Numbers category -->
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:background="@color/title_color"
+        android:minHeight="?attr/actionBarSize">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2 Step"
+            android:textSize="32dp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:layout_gravity="center"
+            android:id="@+id/toolbar_title" />
+    </android.support.v7.widget.Toolbar>
+
+    <!-- Moves -->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/category_numbers">
+        android:background="@color/moves">
         <TextView
+            android:layout_height="match_parent"
             android:id="@+id/numbers"
             style="@style/CategoryStyle"
             android:background="?android:attr/selectableItemBackground"
@@ -36,13 +55,14 @@
             android:gravity="center"/>
     </FrameLayout>
 
-    <!-- Family category -->
+    <!-- progess -->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/category_family">
+        android:background="@color/progress">
         <TextView
+            android:layout_height="match_parent"
             android:id="@+id/family"
             style="@style/CategoryStyle"
             android:background="?android:attr/selectableItemBackground"
@@ -51,13 +71,14 @@
             android:gravity="center"/>
     </FrameLayout>
 
-    <!-- Colors category -->
+    <!-- builder category -->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/category_colors">
+        android:background="@color/builder">
         <TextView
+            android:layout_height="match_parent"
             android:id="@+id/colors"
             style="@style/CategoryStyle"
             android:background="?android:attr/selectableItemBackground"
@@ -66,13 +87,14 @@
             android:gravity="center"/>
     </FrameLayout>
 
-    <!-- Phrases category -->
+    <!-- saved routines -->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/category_phrases">
+        android:background="@color/saved">
         <TextView
+            android:layout_height="match_parent"
             android:id="@+id/phrases"
             style="@style/CategoryStyle"
             android:background="?android:attr/selectableItemBackground"

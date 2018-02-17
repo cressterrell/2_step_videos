@@ -17,9 +17,15 @@ package com.example.android.miwok;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Layout;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,12 +65,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(view.getContext(), "Coming Soon", Toast.LENGTH_LONG).show();
-
-               /* // Create a new intent to open the {@link ProgressLevelActivity}
-                Intent familyIntent = new Intent(MainActivity.this, ProgressLevelActivity.class);
-
-                // Start the new activity
-                startActivity(familyIntent);*/
             }
         });
 
@@ -77,21 +77,6 @@ public class MainActivity extends AppCompatActivity {
         ColorsClickListener clickListener = new ColorsClickListener();
         colors.setOnClickListener(clickListener);
 
-//        // Set a click listener on that View
-//        colors.setOnClickListener(new OnClickListener() {
-//            // The code in this method will be executed when the colors category is clicked on.
-//            @Override
-//            public void onClick(View view) {
-//                Toast.makeText(view.getContext(), "Coming Soon", Toast.LENGTH_SHORT).show();
-//
-//              /*  // Create a new intent to open the {@link RoutineBuilderActivity}
-//                Intent colorsIntent = new Intent(MainActivity.this, RoutineBuilderActivity.class);
-//
-//                // Start the new activity
-//                startActivity(colorsIntent);*/
-//            }
-//        });
-
         // Find the View that shows the phrases category
         TextView phrases = (TextView) findViewById(R.id.phrases);
 
@@ -101,13 +86,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(view.getContext(), "Coming Soon", Toast.LENGTH_SHORT).show();
-
-             /*   // Create a new intent to open the {@link SavedRoutinesActivity}
-                Intent phrasesIntent = new Intent(MainActivity.this, SavedRoutinesActivity.class);
-
-                // Start the new activity
-                startActivity(phrasesIntent);*/
             }
         });
+
     }
+
 }
