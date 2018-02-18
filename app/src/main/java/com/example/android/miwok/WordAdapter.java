@@ -49,9 +49,6 @@ public class WordAdapter extends ArrayAdapter<Word>  {
     private Context mContext;
     private SharedPreferences mPref;
 
-
-    public static final String PREF_FILE_KEY = "DanceDancePref";
-
     /**
      * Create a new {@link WordAdapter} object.
      *
@@ -63,7 +60,7 @@ public class WordAdapter extends ArrayAdapter<Word>  {
         super(context, 0, words);
         mColorResourceId = colorResourceId;
         mContext = context;
-        SharedPreferences mPref = mContext.getApplicationContext().getSharedPreferences(PREF_FILE_KEY, MODE_PRIVATE);
+        SharedPreferences mPref = mContext.getApplicationContext().getSharedPreferences(MovesManager.PREF_FILE_KEY, MODE_PRIVATE);
     }
 
     @Override
@@ -92,7 +89,7 @@ public class WordAdapter extends ArrayAdapter<Word>  {
         viewHolder.defaultTextView.setText(currentWord.getDefaultTranslation());
 
         if (mPref == null) {
-            mPref = mContext.getApplicationContext().getSharedPreferences(PREF_FILE_KEY, MODE_PRIVATE);
+            mPref = mContext.getApplicationContext().getSharedPreferences(MovesManager.PREF_FILE_KEY, MODE_PRIVATE);
         }
 
         final boolean isCheckedFlag = mPref.getBoolean(String.valueOf(currentWord.getItemId()), false);
