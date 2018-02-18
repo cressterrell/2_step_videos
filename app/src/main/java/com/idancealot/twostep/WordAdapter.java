@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.android.miwok;
+package com.idancealot.twostep;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -25,6 +25,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
+
+import com.idancealot.twostep.Word;
 
 import java.util.ArrayList;
 
@@ -63,6 +65,10 @@ public class WordAdapter extends ArrayAdapter<Word>  {
         SharedPreferences mPref = mContext.getApplicationContext().getSharedPreferences(MovesManager.PREF_FILE_KEY, MODE_PRIVATE);
     }
 
+    public void refresh() {
+        notifyDataSetChanged();
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Check if an existing view is being reused, otherwise inflate the view
@@ -93,6 +99,7 @@ public class WordAdapter extends ArrayAdapter<Word>  {
         }
 
         final boolean isCheckedFlag = mPref.getBoolean(String.valueOf(currentWord.getItemId()), false);
+        final boolean isUserSubscribed = mPref.getBoolean("is_subscriber", false);
 
         viewHolder.checkbox.setChecked(isCheckedFlag);
 
@@ -114,7 +121,7 @@ public class WordAdapter extends ArrayAdapter<Word>  {
         // Set the background color of the text container View
         viewHolder.container.setBackgroundColor(color);
 
-        if (currentWord.getItemId()>5) {
+        if (currentWord.getItemId()>5 && !isUserSubscribed) {
             viewHolder.container.setBackgroundColor(ContextCompat.getColor(mContext, R.color.saved));
         }
 

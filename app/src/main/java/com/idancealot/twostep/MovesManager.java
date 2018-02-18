@@ -1,4 +1,4 @@
-package com.example.android.miwok;
+package com.idancealot.twostep;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -25,26 +25,26 @@ public class MovesManager {
         public ArrayList<Word> getMoves() {
             // Create a list of words
             final ArrayList<Word> words = new ArrayList<Word>();
-            words.add(new Word(1,"1. Basic", "Beginner", R.raw.number_one, R.raw.video_number_one));
-            words.add(new Word(2,"2. Promenade", "Beginner", R.raw.number_two, R.raw.video_number_one));
-            words.add(new Word(3,"3. Right Turning Basic (Natural)", "Beginner",R.raw.number_three, R.raw.video_number_one));
-            words.add(new Word(4,"4. Right Turning Basic (Cross-Body)", "Beginner", R.raw.number_four, R.raw.video_number_one));
-            words.add(new Word(5,"5. Promenade Pivot", "Beginner", R.raw.number_five, R.raw.video_number_one));
-            words.add(new Word(6,"6. Underarm Turn (Left)", "Beginner", R.raw.number_five, R.raw.video_number_one));
-            words.add(new Word(7,"7. Underarm Turn (Right)", "Beginner", R.raw.number_six, R.raw.video_number_one));
-            words.add(new Word(8,"8. Wrap (Walkout)", "Beginner",R.raw.number_seven, R.raw.video_number_one));
-            words.add(new Word(9,"9. Wrap (Check Turn)", "Beginner", R.raw.number_eight, R.raw.video_number_one));
-            words.add(new Word(10,"10. Sweetheart (Check Turn Left)", "Intermediate 1", R.raw.number_ten, R.raw.video_number_one));
-            words.add(new Word(11,"11. Sweetheart (Check Turn Right)", "Intermediate 1", R.raw.number_ten, R.raw.video_number_one));
-            words.add(new Word(12,"12. Grapevine (Closed)", "Beginner", R.raw.number_nine, R.raw.video_number_one));
-            words.add(new Word(13,"13. Grapevine (Backward Hands)", "Intermediate 1", R.raw.number_ten, R.raw.video_number_one));
-            words.add(new Word(14,"14. Grapevine (Forward Hands)", "Intermediate 1", R.raw.number_ten, R.raw.video_number_one));
-            words.add(new Word(15,"15. Basket Whip", "Intermediate 1", R.raw.number_ten, R.raw.video_number_one));
-            words.add(new Word(16,"16. Shoulder Catch", "Intermediate 1", R.raw.number_ten, R.raw.video_number_one));
-            words.add(new Word(17,"17. Weave (Inside)", "Intermediate 1", R.raw.number_ten, R.raw.video_number_one));
-            words.add(new Word(18,"18. Weave (Outside)", "Intermediate 1", R.raw.number_ten, R.raw.video_number_one));
-            words.add(new Word(19,"19. Weave (Outside/Inside)", "Intermediate 1", R.raw.number_ten, R.raw.video_number_one));
-            words.add(new Word(20,"20. Side-by-Side Freespins", "Intermediate 1", R.raw.number_ten, R.raw.video_number_one));
+            words.add(new Word(1,"Basic", "Beginner", R.raw.number_one, R.raw.video_number_one));
+            words.add(new Word(2,"Promenade", "Beginner", R.raw.number_two, R.raw.video_number_one));
+            words.add(new Word(3,"Right Turning (Natural)", "Beginner",R.raw.number_three, R.raw.video_number_one));
+            words.add(new Word(4,"Right Turning (Cross-Body)", "Beginner", R.raw.number_four, R.raw.video_number_one));
+            words.add(new Word(5,"Promenade Pivot", "Beginner", R.raw.number_five, R.raw.video_number_one));
+            words.add(new Word(6,"Underarm Turn (Left)", "Beginner", R.raw.number_five, R.raw.video_number_one));
+            words.add(new Word(7,"Underarm Turn (Right)", "Beginner", R.raw.number_six, R.raw.video_number_one));
+            words.add(new Word(8,"Wrap (Walkout)", "Beginner",R.raw.number_seven, R.raw.video_number_one));
+            words.add(new Word(9,"Wrap (Check Turn)", "Beginner", R.raw.number_eight, R.raw.video_number_one));
+            words.add(new Word(10,"Sweetheart (Check Turn Lt)", "Intermediate 1", R.raw.number_ten, R.raw.video_number_one));
+            words.add(new Word(11,"Sweetheart (Check Turn Rt)", "Intermediate 1", R.raw.number_ten, R.raw.video_number_one));
+            words.add(new Word(12,"Grapevine (Closed)", "Beginner", R.raw.number_nine, R.raw.video_number_one));
+            words.add(new Word(13,"Grapevine (Bkd Hands)", "Intermediate 1", R.raw.number_ten, R.raw.video_number_one));
+            words.add(new Word(14,"Grapevine (Fwd Hands)", "Intermediate 1", R.raw.number_ten, R.raw.video_number_one));
+            words.add(new Word(15,"Basket Whip", "Intermediate 1", R.raw.number_ten, R.raw.video_number_one));
+            words.add(new Word(16,"Shoulder Catch", "Intermediate 1", R.raw.number_ten, R.raw.video_number_one));
+            words.add(new Word(17,"Weave (Inside)", "Intermediate 1", R.raw.number_ten, R.raw.video_number_one));
+            words.add(new Word(18,"Weave (Outside)", "Intermediate 1", R.raw.number_ten, R.raw.video_number_one));
+            words.add(new Word(19,"Weave (Outside/Inside)", "Intermediate 1", R.raw.number_ten, R.raw.video_number_one));
+            words.add(new Word(20,"Side-by-Side Freespins", "Intermediate 1", R.raw.number_ten, R.raw.video_number_one));
             return words;
         }
 

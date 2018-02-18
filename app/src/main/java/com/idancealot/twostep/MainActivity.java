@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.android.miwok;
+package com.idancealot.twostep;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,7 +29,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import static com.example.android.miwok.R.id.colors;
+import static com.idancealot.twostep.R.id.colors;
 
 public class MainActivity extends AppCompatActivity {
 
