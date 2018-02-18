@@ -15,8 +15,8 @@ android {
         applicationId "com.idancealot.twostep"
         minSdkVersion 21
         targetSdkVersion 23
-        versionCode 3
-        versionName "30"
+        versionCode 4
+        versionName "40"
         signingConfig signingConfigs.config
     }
     buildTypes {

@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.idancealot.twostep.Word;
 
@@ -99,7 +100,7 @@ public class WordAdapter extends ArrayAdapter<Word>  {
         }
 
         final boolean isCheckedFlag = mPref.getBoolean(String.valueOf(currentWord.getItemId()), false);
-        final boolean isUserSubscribed = mPref.getBoolean("is_subscriber", false);
+        boolean isUserSubscribed = mPref.getBoolean("is_subscriber", false);
 
         viewHolder.checkbox.setChecked(isCheckedFlag);
 
@@ -116,13 +117,20 @@ public class WordAdapter extends ArrayAdapter<Word>  {
             }
         });
 
+        if (isUserSubscribed) {
+            //Toast.makeText(mContext,"User has paid for the content",Toast.LENGTH_SHORT).show();
+        } else {
+            //Toast.makeText(mContext,"User is not a subscriber",Toast.LENGTH_SHORT).show();
+        }
+
         // Find the color that the resource ID maps to
         int color = ContextCompat.getColor(getContext(), mColorResourceId);
         // Set the background color of the text container View
         viewHolder.container.setBackgroundColor(color);
-
         if (currentWord.getItemId()>5 && !isUserSubscribed) {
             viewHolder.container.setBackgroundColor(ContextCompat.getColor(mContext, R.color.saved));
+        } else {
+            viewHolder.container.setBackgroundColor(ContextCompat.getColor(mContext, R.color.moves));
         }
 
         return convertView;

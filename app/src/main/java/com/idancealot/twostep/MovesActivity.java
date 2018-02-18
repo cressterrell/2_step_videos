@@ -187,13 +187,15 @@ public class MovesActivity extends AppCompatActivity {
             public void onPurchasesUpdated(@BillingResponse int responseCode,
                                     List<Purchase> purchases) {
                 if (responseCode == BillingClient.BillingResponse.OK) {
+                    //Toast.makeText(mContext,"purchase flow", Toast.LENGTH_SHORT).show();
                     SharedPreferences pref = mContext.getApplicationContext().getSharedPreferences(MovesManager.PREF_FILE_KEY, MODE_PRIVATE);
                     SharedPreferences.Editor editor = pref.edit();
                     editor.putBoolean("is_subscriber", false);
                     editor.commit();
                     if (purchases!= null) {
                         for (Purchase purchase : purchases) {
-                            if (purchase.getSku() == "premium_subscription") {
+                           //Toast.makeText(mContext,purchase.getSku(), Toast.LENGTH_LONG).show();
+                            if (purchase.getSku().compareTo("premium_subscription")==0) {
                                 editor.putBoolean("is_subscriber", true);
                                 editor.commit();
                             }
@@ -216,6 +218,7 @@ public class MovesActivity extends AppCompatActivity {
         mBillingClient = BillingClient.newBuilder(this)
                 .setListener(mPurchasesUpdatedListener)
                 .build();
+
         mBillingClient.startConnection(new BillingClientStateListener() {
             @Override
             public void onBillingSetupFinished(@BillingResponse int billingResponseCode) {
@@ -224,14 +227,18 @@ public class MovesActivity extends AppCompatActivity {
                     // The billing client is ready. You can query purchases here.
                     mGooglePlayStoreReady = true;
                     //Toast.makeText(mContext, "Google Play Store activated", Toast.LENGTH_SHORT).show();
+                    Purchase.PurchasesResult purchases = mBillingClient.queryPurchases(BillingClient.SkuType.SUBS);
+                    if (purchases.getPurchasesList()!=null) {
+                        mPurchasesUpdatedListener.onPurchasesUpdated(BillingClient.BillingResponse.OK, purchases.getPurchasesList());
+                    }
                 } else {
                     mGooglePlayStoreReady = false;
-                    //Toast.makeText(mContext, "Unable to contact Google Play Store", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "Unable to contact Google Play Store", Toast.LENGTH_SHORT).show();
                 }
             }
             @Override
             public void onBillingServiceDisconnected() {
-                Toast.makeText(mContext, "Google Play Store Disconnect", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(mContext, "Google Play Store Disconnect", Toast.LENGTH_SHORT).show();
             }
         });
     }
