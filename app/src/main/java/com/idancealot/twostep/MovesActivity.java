@@ -140,35 +140,14 @@ public class MovesActivity extends AppCompatActivity {
 
                 // Release the media player if it currently exists because we are about to
                 // play a different sound file
-                releaseMediaPlayer();
+                //releaseMediaPlayer();
 
                 // Get the {@link Word} object at the given position the user clicked on
                 Word word = MovesManager.getInstance().getMoves().get(position);
 
                 if (isUserSubscribed || word.getItemId()<=5) {
-
-                    // Request audio focus so in order to play the audio file. The app needs to play a
-                    // short audio file, so we will request audio focus with a short amount of time
-                    // with AUDIOFOCUS_GAIN_TRANSIENT.
-                    int result = mAudioManager.requestAudioFocus(mOnAudioFocusChangeListener,
-                            AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT);
-
-                    if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
-                        // We have audio focus now.
-
-                        // Create and setup the {@link MediaPlayer} for the audio resource associated
-                        // with the current word
-                        mMediaPlayer = MediaPlayer.create(MovesActivity.this, word.getAudioResourceId());
-
-                        // Start the audio file
-                        mMediaPlayer.start();
-
-                        // Setup a listener on the media player, so that we can stop and release the
-                        // media player once the sound has finished playing.
-                        mMediaPlayer.setOnCompletionListener(mCompletionListener);
-                    }
-
                     mSelectedItem = word;
+                    launchVideo();
                 } else {
                     if (mGooglePlayStoreReady) {
                         BillingFlowParams.Builder builder = BillingFlowParams

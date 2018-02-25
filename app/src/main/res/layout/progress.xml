@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:background="@color/moves"
+    android:background="@color/progress"
     android:layout_height="match_parent">
 
     <android.support.v7.widget.Toolbar
@@ -40,9 +40,11 @@
         android:textSize="20sp"
         android:textColor="@color/white"
         android:textStyle="bold"
+        android:paddingLeft="20dp"
         android:layout_width="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_marginTop="16dp"
         android:layout_below="@+id/toolbar"
+        android:gravity="center_horizontal"
         android:layout_centerHorizontal="true"/>
     <TextView
         android:layout_height="wrap_content"
@@ -84,7 +86,9 @@
         android:textColor="@color/white"
         android:textStyle="bold"
         android:layout_width="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_margin="20dp"
+        android:paddingLeft="16dp"
+        android:gravity="center_horizontal"
         android:layout_below="@+id/div1"
         android:layout_centerHorizontal="true"/>
     <TextView
@@ -125,7 +129,9 @@
         android:text="X of Y"
         android:textSize="20sp"
         android:textColor="@color/white"
+        android:paddingLeft="20dp"
         android:textStyle="bold"
+        android:gravity="center_horizontal"
         android:layout_width="wrap_content"
         android:layout_margin="16dp"
         android:layout_below="@+id/div2"
@@ -169,7 +175,9 @@
         android:textSize="20sp"
         android:textColor="@color/white"
         android:textStyle="bold"
+        android:paddingLeft="20dp"
         android:layout_width="wrap_content"
+        android:gravity="center_horizontal"
         android:layout_margin="16dp"
         android:layout_below="@+id/div3"
         android:layout_centerHorizontal="true"/>
@@ -212,7 +220,9 @@
         android:textSize="20sp"
         android:textColor="@color/white"
         android:textStyle="bold"
+        android:gravity="center_horizontal"
         android:layout_width="wrap_content"
+        android:paddingLeft="20dp"
         android:layout_margin="16dp"
         android:layout_below="@+id/div4"
         android:layout_centerHorizontal="true"/>
