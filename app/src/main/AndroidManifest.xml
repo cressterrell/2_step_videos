@@ -40,8 +40,6 @@
             android:name=".SavedRoutinesActivity" android:screenOrientation="portrait"
             android:label="@string/category_saved_routine" />
         <activity
-            android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden"
             android:name=".DanceDanceVideoPlayer"
             android:label="DDVP" />
     </application>

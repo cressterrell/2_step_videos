@@ -128,7 +128,7 @@ public class WordAdapter extends ArrayAdapter<Word>  {
         // Set the background color of the text container View
         viewHolder.container.setBackgroundColor(color);
         if (currentWord.getItemId()>5 && !isUserSubscribed) {
-            viewHolder.container.setBackgroundColor(ContextCompat.getColor(mContext, R.color.saved));
+            viewHolder.container.setBackgroundColor(ContextCompat.getColor(mContext, R.color.progress));
         } else {
             viewHolder.container.setBackgroundColor(ContextCompat.getColor(mContext, R.color.moves));
         }
