@@ -1,4 +1,4 @@
-package com.example.android.miwok;
+package com.idancealot.twostep;
 
 import android.view.View;
 import android.widget.Toast;

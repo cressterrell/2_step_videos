@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.android.miwok;
+package com.idancealot.twostep;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -25,6 +25,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.idancealot.twostep.Word;
 
 import java.util.ArrayList;
 
@@ -49,9 +52,6 @@ public class WordAdapter extends ArrayAdapter<Word>  {
     private Context mContext;
     private SharedPreferences mPref;
 
-
-    public static final String PREF_FILE_KEY = "DanceDancePref";
-
     /**
      * Create a new {@link WordAdapter} object.
      *
@@ -63,7 +63,11 @@ public class WordAdapter extends ArrayAdapter<Word>  {
         super(context, 0, words);
         mColorResourceId = colorResourceId;
         mContext = context;
-        SharedPreferences mPref = mContext.getApplicationContext().getSharedPreferences(PREF_FILE_KEY, MODE_PRIVATE);
+        SharedPreferences mPref = mContext.getApplicationContext().getSharedPreferences(MovesManager.PREF_FILE_KEY, MODE_PRIVATE);
+    }
+
+    public void refresh() {
+        notifyDataSetChanged();
     }
 
     @Override
@@ -77,7 +81,7 @@ public class WordAdapter extends ArrayAdapter<Word>  {
             viewHolder.miWokTextView = ((TextView) convertView.findViewById(R.id.miwok_text_view));
             viewHolder.defaultTextView = ((TextView) convertView.findViewById(R.id.default_text_view));
             viewHolder.checkbox = ((CheckBox) convertView.findViewById(R.id.check_box));
-            viewHolder.container = ((View) convertView.findViewById(R.id.text_container));
+            viewHolder.container = ((View) convertView.findViewById(R.id.container));
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolderItem) convertView.getTag();
@@ -92,10 +96,11 @@ public class WordAdapter extends ArrayAdapter<Word>  {
         viewHolder.defaultTextView.setText(currentWord.getDefaultTranslation());
 
         if (mPref == null) {
-            mPref = mContext.getApplicationContext().getSharedPreferences(PREF_FILE_KEY, MODE_PRIVATE);
+            mPref = mContext.getApplicationContext().getSharedPreferences(MovesManager.PREF_FILE_KEY, MODE_PRIVATE);
         }
 
         final boolean isCheckedFlag = mPref.getBoolean(String.valueOf(currentWord.getItemId()), false);
+        boolean isUserSubscribed = mPref.getBoolean("is_subscriber", false);
 
         viewHolder.checkbox.setChecked(isCheckedFlag);
 
@@ -112,10 +117,21 @@ public class WordAdapter extends ArrayAdapter<Word>  {
             }
         });
 
+        if (isUserSubscribed) {
+            //Toast.makeText(mContext,"User has paid for the content",Toast.LENGTH_SHORT).show();
+        } else {
+            //Toast.makeText(mContext,"User is not a subscriber",Toast.LENGTH_SHORT).show();
+        }
+
         // Find the color that the resource ID maps to
         int color = ContextCompat.getColor(getContext(), mColorResourceId);
         // Set the background color of the text container View
         viewHolder.container.setBackgroundColor(color);
+        if (currentWord.getItemId()>5 && !isUserSubscribed) {
+            viewHolder.container.setBackgroundColor(ContextCompat.getColor(mContext, R.color.progress));
+        } else {
+            viewHolder.container.setBackgroundColor(ContextCompat.getColor(mContext, R.color.moves));
+        }
 
         return convertView;
     }

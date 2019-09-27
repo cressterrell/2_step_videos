@@ -13,20 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.android.miwok;
+package com.idancealot.twostep;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 import android.widget.VideoView;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.net.Uri;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
+
+import com.android.billingclient.api.BillingClient;
+import com.android.billingclient.api.Purchase;
+import com.android.billingclient.api.PurchasesUpdatedListener;
+import static com.android.billingclient.api.BillingClient.BillingResponse;
+import com.android.billingclient.api.BillingFlowParams;
+import com.android.billingclient.api.BillingClientStateListener;
 
 public class MovesActivity extends AppCompatActivity {
 
@@ -37,6 +49,13 @@ public class MovesActivity extends AppCompatActivity {
     private AudioManager mAudioManager;
 
     private Word mSelectedItem = null;
+
+    private Context mContext;
+
+    private BillingClient mBillingClient;
+    private PurchasesUpdatedListener mPurchasesUpdatedListener;
+
+    private boolean mGooglePlayStoreReady=false;
 
     /**
      * This listener gets triggered whenever the audio focus changes
@@ -94,42 +113,19 @@ public class MovesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.word_list);
+        mContext = this;
 
         // Create and setup the {@link AudioManager} to request audio focus
         mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
-        // Create a list of words
-        final ArrayList<Word> words = new ArrayList<Word>();
-        words.add(new Word(1,"1. Basic", "Beginner", R.raw.number_one, R.raw.video_number_one));
-        words.add(new Word(2,"2. Promenade", "Beginner", R.raw.number_two, R.raw.video_number_one));
-        words.add(new Word(3,"3. Right Turning Basic (Natural)", "Beginner",R.raw.number_three, R.raw.video_number_one));
-        words.add(new Word(4,"4. Right Turning Basic (Cross-Body)", "Beginner", R.raw.number_four, R.raw.video_number_one));
-        words.add(new Word(5,"5. Promenade Pivot", "Beginner", R.raw.number_five, R.raw.video_number_one));
-        words.add(new Word(6,"6. Underarm Turn (Left)", "Beginner", R.raw.number_five, R.raw.video_number_one));
-        words.add(new Word(7,"7. Underarm Turn (Right)", "Beginner", R.raw.number_six, R.raw.video_number_one));
-        words.add(new Word(8,"8. Wrap (Walkout)", "Beginner",R.raw.number_seven, R.raw.video_number_one));
-        words.add(new Word(9,"9. Wrap (Check Turn)", "Beginner", R.raw.number_eight, R.raw.video_number_one));
-        words.add(new Word(10,"10. Sweetheart (Check Turn Left)", "Intermediate 1", R.raw.number_ten, R.raw.video_number_one));
-        words.add(new Word(11,"11. Sweetheart (Check Turn Right)", "Intermediate 1", R.raw.number_ten, R.raw.video_number_one));
-        words.add(new Word(12,"12. Grapevine (Closed)", "Beginner", R.raw.number_nine, R.raw.video_number_one));
-        words.add(new Word(13,"13. Grapevine (Backward Hands)", "Intermediate 1", R.raw.number_ten, R.raw.video_number_one));
-        words.add(new Word(14,"14. Grapevine (Forward Hands)", "Intermediate 1", R.raw.number_ten, R.raw.video_number_one));
-        words.add(new Word(15,"15. Basket Whip", "Intermediate 1", R.raw.number_ten, R.raw.video_number_one));
-        words.add(new Word(16,"16. Shoulder Catch", "Intermediate 1", R.raw.number_ten, R.raw.video_number_one));
-        words.add(new Word(17,"17. Weave (Inside)", "Intermediate 1", R.raw.number_ten, R.raw.video_number_one));
-        words.add(new Word(18,"18. Weave (Outside)", "Intermediate 1", R.raw.number_ten, R.raw.video_number_one));
-        words.add(new Word(19,"19. Weave (Outside/Inside)", "Intermediate 1", R.raw.number_ten, R.raw.video_number_one));
-        words.add(new Word(20,"20. Side-by-Side Freespins", "Intermediate 1", R.raw.number_ten, R.raw.video_number_one));
-
-
         // Create an {@link WordAdapter}, whose data source is a list of {@link Word}s. The
         // adapter knows how to create list items for each item in the list.
-        WordAdapter adapter = new WordAdapter(this, words, R.color.category_numbers);
+        WordAdapter adapter = new WordAdapter(this, MovesManager.getInstance().getMoves(), R.color.moves);
 
         // Find the {@link ListView} object in the view hierarchy of the {@link Activity}.
         // There should be a {@link ListView} with the view ID called list, which is declared in the
         // word_list.xml layout file.
-        ListView listView = (ListView) findViewById(R.id.list);
+        final ListView listView = (ListView) findViewById(R.id.list);
 
         // Make the {@link ListView} use the {@link WordAdapter} we created above, so that the
         // {@link ListView} will display list items for each {@link Word} in the list.
@@ -139,35 +135,89 @@ public class MovesActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                SharedPreferences prefs = mContext.getApplicationContext().getSharedPreferences(MovesManager.PREF_FILE_KEY, MODE_PRIVATE);
+                boolean isUserSubscribed = prefs.getBoolean("is_subscriber", false);
+
                 // Release the media player if it currently exists because we are about to
                 // play a different sound file
-                releaseMediaPlayer();
+                //releaseMediaPlayer();
 
                 // Get the {@link Word} object at the given position the user clicked on
-                Word word = words.get(position);
+                Word word = MovesManager.getInstance().getMoves().get(position);
 
-                // Request audio focus so in order to play the audio file. The app needs to play a
-                // short audio file, so we will request audio focus with a short amount of time
-                // with AUDIOFOCUS_GAIN_TRANSIENT.
-                int result = mAudioManager.requestAudioFocus(mOnAudioFocusChangeListener,
-                        AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT);
-
-                if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
-                    // We have audio focus now.
-
-                    // Create and setup the {@link MediaPlayer} for the audio resource associated
-                    // with the current word
-                    mMediaPlayer = MediaPlayer.create(MovesActivity.this, word.getAudioResourceId());
-
-                    // Start the audio file
-                    mMediaPlayer.start();
-
-                    // Setup a listener on the media player, so that we can stop and release the
-                    // media player once the sound has finished playing.
-                    mMediaPlayer.setOnCompletionListener(mCompletionListener);
+                if (isUserSubscribed || word.getItemId()<=5) {
+                    mSelectedItem = word;
+                    launchVideo();
+                } else {
+                    if (mGooglePlayStoreReady) {
+                        BillingFlowParams.Builder builder = BillingFlowParams
+                                .newBuilder()
+                                .setSku("premium_subscription").setType(BillingClient.SkuType.SUBS);
+                        int result = mBillingClient.launchBillingFlow((AppCompatActivity)mContext, builder.build());
+                    } else {
+                        Toast.makeText(mContext, "Unable to contact Google Play Store--Please try again later.", Toast.LENGTH_SHORT).show();
+                    }
                 }
+            }
+        });
 
-                mSelectedItem = word;
+        mPurchasesUpdatedListener = new PurchasesUpdatedListener() {
+            @Override
+            public void onPurchasesUpdated(@BillingResponse int responseCode,
+                                    List<Purchase> purchases) {
+                if (responseCode == BillingClient.BillingResponse.OK) {
+                    //Toast.makeText(mContext,"purchase flow", Toast.LENGTH_SHORT).show();
+                    SharedPreferences pref = mContext.getApplicationContext().getSharedPreferences(MovesManager.PREF_FILE_KEY, MODE_PRIVATE);
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.putBoolean("is_subscriber", false);
+                    editor.commit();
+                    if (purchases!= null) {
+                        for (Purchase purchase : purchases) {
+                           //Toast.makeText(mContext,purchase.getSku(), Toast.LENGTH_LONG).show();
+                            if (purchase.getSku().compareTo("premium_subscription")==0) {
+                                editor.putBoolean("is_subscriber", true);
+                                editor.commit();
+                            }
+                        }
+                    }
+                } else if (responseCode == BillingClient.BillingResponse.USER_CANCELED) {
+                    // Handle an error caused by a user canceling the purchase flow.
+                } else {
+                    // Handle any other error codes.
+                }
+                new android.os.Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((WordAdapter)(listView.getAdapter())).refresh();
+                    }
+                }, 250);
+            }
+        };
+
+        mBillingClient = BillingClient.newBuilder(this)
+                .setListener(mPurchasesUpdatedListener)
+                .build();
+
+        mBillingClient.startConnection(new BillingClientStateListener() {
+            @Override
+            public void onBillingSetupFinished(@BillingResponse int billingResponseCode) {
+
+                if (billingResponseCode == BillingResponse.OK) {
+                    // The billing client is ready. You can query purchases here.
+                    mGooglePlayStoreReady = true;
+                    //Toast.makeText(mContext, "Google Play Store activated", Toast.LENGTH_SHORT).show();
+                    Purchase.PurchasesResult purchases = mBillingClient.queryPurchases(BillingClient.SkuType.SUBS);
+                    if (purchases.getPurchasesList()!=null) {
+                        mPurchasesUpdatedListener.onPurchasesUpdated(BillingClient.BillingResponse.OK, purchases.getPurchasesList());
+                    }
+                } else {
+                    mGooglePlayStoreReady = false;
+                    Toast.makeText(mContext, "Unable to contact Google Play Store", Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onBillingServiceDisconnected() {
+                //Toast.makeText(mContext, "Google Play Store Disconnect", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -200,4 +250,5 @@ public class MovesActivity extends AppCompatActivity {
             mAudioManager.abandonAudioFocus(mOnAudioFocusChangeListener);
         }
     }
+
 }

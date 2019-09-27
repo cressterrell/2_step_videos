@@ -1,4 +1,4 @@
-package com.example.android.miwok;
+package com.idancealot.twostep;
 
 import android.app.Activity;
 import android.content.Intent;

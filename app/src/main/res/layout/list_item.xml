@@ -19,16 +19,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/list_item_height"
-    android:background="@color/tan_background"
+    android:background="@color/moves"
+    android:id="@+id/container"
     android:descendantFocusability="blocksDescendants"
     android:minHeight="@dimen/list_item_height">
 
-    <CheckBox
-        android:id="@+id/check_box"
-        android:gravity="center"
-        android:layout_marginLeft="22dp"
-        android:layout_width="@dimen/list_item_height"
-        android:layout_height="@dimen/list_item_height" />
+    <FrameLayout
+        android:id="@+id/cb_holder"
+        android:layout_width="70dp"
+        android:layout_height="@dimen/list_item_height">
+
+        <View
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="22dp"
+            android:background="@color/white"/>
+
+        <CheckBox
+            android:id="@+id/check_box"
+            android:layout_width="@dimen/list_item_height"
+            android:layout_height="@dimen/list_item_height"
+            android:button="@null"
+            android:backgroundTint="#000000"
+            android:background="?android:attr/listChoiceIndicatorMultiple"/>
+
+    </FrameLayout>
 
     <RelativeLayout
         android:id="@+id/text_container"
@@ -37,7 +52,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_toRightOf="@id/check_box"
+        android:layout_toRightOf="@id/cb_holder"
         android:orientation="vertical"
         android:paddingLeft="16dp">
 
@@ -64,11 +79,11 @@
             tools:text="one" />
 
         <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="16dp"
+            android:layout_marginRight="8dp"
             android:src="@drawable/ic_play_arrow" />
     </RelativeLayout>
 </RelativeLayout>

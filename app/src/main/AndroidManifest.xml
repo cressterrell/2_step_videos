@@ -14,35 +14,32 @@
      limitations under the License.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.android.miwok">
+    package="com.idancealot.twostep">
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".MovesActivity"
+            android:name=".MovesActivity" android:screenOrientation="portrait"
             android:label="@string/category_moves" />
         <activity
-            android:name=".ProgressLevelActivity"
+            android:name=".ProgressLevelActivity" android:screenOrientation="portrait"
             android:label="@string/category_progress_level" />
         <activity
-            android:name=".RoutineBuilderActivity"
+            android:name=".RoutineBuilderActivity" android:screenOrientation="portrait"
             android:label="@string/category_routine_builder" />
         <activity
-            android:name=".SavedRoutinesActivity"
+            android:name=".SavedRoutinesActivity" android:screenOrientation="portrait"
             android:label="@string/category_saved_routine" />
         <activity
-            android:screenOrientation="landscape"
-            android:configChanges="orientation|keyboardHidden"
             android:name=".DanceDanceVideoPlayer"
             android:label="DDVP" />
     </application>
